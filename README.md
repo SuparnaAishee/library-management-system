@@ -6,8 +6,7 @@
 
 ## Live URL
 
-[Link to Live Backend Deployment]
-
+https://library-management-system-beige-theta.vercel.app
 ## Technology Stack & Packages
 
 This project uses the following technologies and packages:
