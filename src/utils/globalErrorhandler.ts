@@ -5,6 +5,7 @@ import HttpError from "../errors/HttpError";
 import { Prisma } from "@prisma/client";
 import handlePrismaError from "../errors/handlePrismaError";
 
+
 const globalErrorHandler = (
   err: any,
   req: Request,
