@@ -12,28 +12,39 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+
+model Member {
+  memberId       String         @id @default(uuid())
+  name           String         @db.VarChar(255)
+  email          String         @unique @db.VarChar(255)
+  phone          String         @db.VarChar(20)
+  membershipDate DateTime       @default(now())
+  borrowRecord   BorrowRecord[]
+
+  @@map("members")
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+model Book {
+  bookId          String         @id @default(uuid())
+  title           String         @db.VarChar(255)
+  genre           String         @db.VarChar(255)
+  publishedYear   Int
+  totalCopies     Int
+  availableCopies Int
+  borrowRecord    BorrowRecord[]
+
+  @@map("books")
 }
 
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
+model BorrowRecord {
+  borrowId   String    @id @default(uuid())
+  borrowDate DateTime  @default(now())
+  returnDate DateTime?
+  dueDate    DateTime
+  bookId     String
+  book       Book      @relation(fields: [bookId], references: [bookId])
+  memberId   String
+  member     Member    @relation(fields: [memberId], references: [memberId])
+
+  @@map("borrow_records")
 }
